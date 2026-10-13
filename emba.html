@@ -25,7 +25,7 @@
 <meta name="twitter:image" content="https://amithharsha.github.io/electivity-emba-sp27/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════════
    ELECTIVITY v3 — Design refresh
@@ -62,7 +62,7 @@
   --text-primary:#141414; --text-secondary:#3A3A37;
   --text-muted:#5C5C58; --text-link:#3A5488;
   --mono:'Hanken Grotesk',system-ui,sans-serif;
---display:'Bricolage Grotesque','Hanken Grotesk',system-ui,sans-serif;
+--display:'Atkinson Hyperlegible','Hanken Grotesk',system-ui,sans-serif;  /* Regina 10/8: accessible sans-serif for headers/subheaders */
   /* Legacy aliases */
   --bg:#F0F3F8; --card:#ffffff; --bd:#E4E4E0;
   --tx:#141414; --t2:#5C5C58; --t3:#ADADAA;
@@ -77,6 +77,7 @@
 *:focus-visible{outline:2px solid var(--navy-500);outline-offset:2px;border-radius:2px}
 button:focus-visible{border-radius:6px}
 body{font-family:'Hanken Grotesk',system-ui,sans-serif;color:var(--text-primary);background:#F0F4FA;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.55;padding-bottom:80px;font-variant-numeric:tabular-nums}
+html,body{overscroll-behavior:none}  /* Regina 10/8: stop the top bar from rubber-band "bouncing" on mobile */
 button{font-family:'Inter',system-ui,sans-serif;cursor:pointer}
 a{color:var(--text-link)}
 .screen{display:none}.screen.active{display:block}
@@ -97,13 +98,15 @@ a{color:var(--text-link)}
 .landing-divider{display:flex;align-items:center;gap:14px;width:100%;margin-bottom:19px}
 .landing-divider::before,.landing-divider::after{content:'';flex:1;height:.5px;background:rgba(255,255,255,.15)}
 .landing-divider span{font-size:14px;color:rgba(255,255,255,.6);white-space:nowrap;font-weight:500;letter-spacing:.06em}
-.landing-cards{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;width:100%}
-.landing-card{flex:1;min-width:230px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:26px 24px;text-align:left;cursor:pointer;font-family:inherit;transition:background 150ms,border-color 150ms,transform 150ms}
+.landing-cards{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+/* Regina 10/8: icon beside the text (not above) so the cards are compact and the Tour stands out */
+.landing-card{flex:1;min-width:230px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:16px 18px;text-align:left;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:15px;transition:background 150ms,border-color 150ms,transform 150ms}
 .landing-card:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);transform:translateY(-2px)}
-.landing-card-icon{width:46px;height:46px;background:rgba(140,207,27,.2);border:1px solid rgba(140,207,27,.35);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:17px}
-.landing-card-icon svg{width:22px;height:22px;color:var(--green-400)}
-.landing-card-title{font-size:17px;font-weight:600;color:#fff;margin-bottom:5px}
-.landing-card-body{font-size:14px;color:rgba(255,255,255,.5);line-height:1.55}
+.landing-card-icon{width:42px;height:42px;background:rgba(140,207,27,.2);border:1px solid rgba(140,207,27,.35);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.landing-card-icon svg{width:21px;height:21px;color:var(--green-400)}
+.landing-card-text{flex:1;min-width:0}
+.landing-card-title{font-size:17px;font-weight:700;color:#fff;margin-bottom:3px}
+.landing-card-body{font-size:13.5px;color:rgba(255,255,255,.5);line-height:1.5}
 .landing-tour{margin-top:19px;display:inline-flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:11px 22px;color:rgba(255,255,255,.72);font-family:inherit;font-size:16px;cursor:pointer;transition:background 150ms,border-color 150ms,color 150ms}
 .landing-tour:hover{background:rgba(140,207,27,.14);border-color:rgba(140,207,27,.45);color:#fff}
 .landing-tour b{font-weight:700;color:#fff}
@@ -241,6 +244,14 @@ a{color:var(--text-link)}
 .seg-b svg{width:14px;height:14px;flex-shrink:0}
 .seg-b:hover{color:var(--navy-700)}
 .seg-b.on{color:var(--navy-900);border-bottom-color:var(--green-500);font-weight:700;font-size:13px}
+@media(max-width:560px){
+  /* Regina 10/8: all 4 tabs fit without horizontal scroll (so "My Spring Course Credits" is never hidden);
+     icon over wrapped text, two lines allowed. */
+  .seg{overflow-x:visible;padding:0 3px;gap:2px}
+  .seg-b{flex:1 1 0;min-width:0;flex-direction:column;gap:3px;padding:8px 3px;font-size:10.5px;line-height:1.14;white-space:normal;text-align:center;justify-content:flex-start}
+  .seg-b.on{font-size:10.5px}
+  .seg-b svg{width:15px;height:15px}
+}
 
 /* ════════════════════════════════════════
    FILTER PANEL
@@ -253,6 +264,17 @@ a{color:var(--text-link)}
 .btn-search:hover{background:var(--navy-700)}
 .btn-search svg{width:15px;height:15px;flex-shrink:0}
 @media(max-width:560px){.search-row{flex-wrap:wrap}.search-row .search-wrap{flex:1 1 100%}.btn-search{flex:1 1 100%;justify-content:center;padding:13px 20px;font-size:14px}}
+/* Regina 10/8: collapse the filter pills behind a "Filters" toggle on mobile to free up the working area */
+.fbtn{display:none}
+@media(max-width:560px){
+  .fbtn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:11px 14px;margin-bottom:6px;border:1.5px solid var(--navy-100);border-radius:9px;background:#fff;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--navy-700);cursor:pointer}
+  .fbtn-cv{transition:transform .15s;flex-shrink:0}
+  .filter-wrap.fopen .fbtn-cv{transform:rotate(180deg)}
+  .fbtn-badge{background:var(--green-500);color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;min-width:18px;text-align:center}
+  .fbtn-badge:empty{display:none}
+  .fgroups{display:none}
+  .filter-wrap.fopen .fgroups{display:block}
+}
 mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-weight:inherit}
 .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--text-muted);pointer-events:none}
 .search-input{width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--gray-100);border-radius:9px;background:var(--gray-50);font-family:inherit;font-size:14px;color:var(--text-primary);outline:none;transition:border-color .12s,background .12s}
@@ -621,11 +643,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
    CALENDAR TAB
 ════════════════════════════════════════ */
 .cw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px;border:1.5px solid var(--navy-100);box-shadow:0 2px 8px rgba(22,40,72,.07)}
-.cal-hint{display:none}
-@media(max-width:560px){
-  .cal-hint{display:block;font-size:12px;font-weight:600;color:var(--navy-700);background:var(--navy-50,#eef2fb);border:1px solid var(--navy-100);border-radius:8px;padding:8px 12px;margin-bottom:10px}
-  .cw{position:relative;background:linear-gradient(to left,rgba(22,40,72,.10),rgba(22,40,72,0) 24px) right center/36px 100% no-repeat}
-}
+.cal-hint{display:none}  /* Regina 10/8: calendar now fits all 4 columns on mobile — no swipe needed */
 .cal{border-collapse:collapse;width:100%;min-width:550px;font-size:12px;background:#fff}
 .cal th{background:var(--navy-900);color:rgba(255,255,255,.85);padding:10px 12px;text-align:left;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:none}
 .cal th:first-child{border-right:1px solid rgba(255,255,255,.08)}
@@ -638,6 +656,19 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .c-core  {background:var(--navy-50);  border-color:var(--navy-500); color:var(--navy-700)}
 .c-elec  {background:var(--green-50); border-color:var(--green-500);color:var(--green-700)}
 .c-conf  {background:var(--rose-50);  border-color:var(--rose-500); color:var(--rose-700);outline:1.5px solid var(--rose-300);outline-offset:-1px}
+@media(max-width:560px){
+  /* Regina 10/8: fit Date/Morning/Afternoon/Evening on one screen (important for evening-only students
+     whose classes are all in the Evening column, which was previously off-screen to the right). */
+  .cw{overflow-x:hidden}
+  .cal{min-width:0;table-layout:fixed;font-size:9.5px}
+  .cal th{padding:6px 2px;font-size:8.5px;letter-spacing:.01em;text-align:center}
+  .cal th:first-child{width:36px}   /* Date column narrow; the 3 time columns get the rest */
+  .cal td{padding:3px 2px;min-width:0}
+  .cal .dt{width:34px;font-size:9.5px;padding:5px 2px;text-align:center;white-space:normal}
+  .cal-ev{padding:3px 3px;font-size:9.5px;line-height:1.28;margin:2px 0;border-left-width:2px;border-radius:4px;word-break:break-word}
+  .cal-ev b{font-size:9.5px}
+  .ev-time{font-size:9px}
+}
 .c-spec  {background:var(--gray-50);  border-color:var(--gray-500); color:var(--gray-700)}
 .cal-empty{font-size:12px;color:var(--gray-300);padding:6px 4px;font-style:italic}
 .lg{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;font-size:12px;color:var(--text-muted);align-items:center}
@@ -925,13 +956,11 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
   <div class="landing-cards">
     <button class="landing-card" onclick="startFresh()">
       <div class="landing-card-icon"><svg><use href="#i-file-plus"/></svg></div>
-      <div class="landing-card-title">Start fresh</div>
-      <div class="landing-card-body">Build your Spring 2027 elective plan from scratch.</div>
+      <div class="landing-card-text"><div class="landing-card-title">Start fresh</div><div class="landing-card-body">Build your Spring 2027 elective plan from scratch.</div></div>
     </button>
     <button class="landing-card" onclick="document.getElementById('load-inp').click()">
       <div class="landing-card-icon"><svg><use href="#i-folder-open"/></svg></div>
-      <div class="landing-card-title">Load saved plan</div>
-      <div class="landing-card-body">Pick up where you left off &mdash; reopen a plan you saved earlier.</div>
+      <div class="landing-card-text"><div class="landing-card-title">Load saved plan</div><div class="landing-card-body">Pick up where you left off &mdash; reopen a plan you saved earlier.</div></div>
     </button>
   </div>
   <button class="landing-tour" onclick="startTour()">
@@ -1008,6 +1037,8 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
         <div class="search-wrap"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="search-input" type="text" id="srch" placeholder="Search title, instructor, area, or CRN &mdash; then press Search" oninput="toggleSearchClear()" onkeydown="if(event.key==='Enter'){event.preventDefault();submitSearch();}"><button type="button" id="srch-clear" class="srch-clear" onclick="clearSearch()" title="Clear search" aria-label="Clear search">&#10005;</button></div>
         <button class="btn-search" onclick="submitSearch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
       </div>
+      <button type="button" class="fbtn" onclick="toggleFilters()"><span style="display:flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg> Filters <span class="fbtn-badge" id="fbtn-badge"></span></span><svg class="fbtn-cv" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="fgroups">
       <div class="pill-row" style="align-items:flex-start;flex-wrap:wrap"><span class="pill-lbl">Areas:</span><div class="pills" id="pills-area" style="display:flex;flex-wrap:wrap;gap:6px"></div></div>
       <div class="pill-row">
         <span class="pill-lbl">Schedule:</span>
@@ -1032,6 +1063,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
         <button class="f-pill pill-sm" data-ftype="strat" data-v="blka" data-ico="ico-columns" onclick="togglePill(this)"><span class="pico"><svg><use href="#ico-columns"/></svg></span> Block A</button>
         <button class="f-pill pill-sm" data-ftype="strat" data-v="blkb" data-ico="ico-columns" onclick="togglePill(this)"><span class="pico"><svg><use href="#ico-columns"/></svg></span> Block B</button>
       </div>
+      </div><!-- /.fgroups -->
       <div style="display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap">
         <div class="res-meta" id="res-meta"></div>
         <div style="margin-left:auto;display:flex;gap:6px">
@@ -4846,6 +4878,7 @@ function submitSearch(){
 }
 function toggleSearchClear(){var s=document.getElementById('srch'),b=document.getElementById('srch-clear');if(b)b.style.display=(s&&s.value)?'flex':'none';}
 function clearSearch(){S.q='';var s=document.getElementById('srch');if(s){s.value='';s.focus();}toggleSearchClear();applyF();}
+function toggleFilters(){var fw=document.querySelector('.filter-wrap');if(fw)fw.classList.toggle('fopen');}
 function clearFilters(){   // clears the filter pills only — leaves the search box alone
   S.fArea=[];S.fSch=[];S.fTerm=[];S.fStrat='';
   document.querySelectorAll('[data-ftype]').forEach(function(b){
@@ -4881,6 +4914,8 @@ function applyF(){
   var total=visible.length;
   var anyActive=!!(q||S.fArea.length||S.fSch.length||S.fTerm.length||S.fStrat);
   document.getElementById('res-meta').textContent=filtered.length+' courses ('+ec+' electives)';
+  var _fb=document.getElementById('fbtn-badge');   // active-filter count on the mobile "Filters" toggle
+  if(_fb){var _n=S.fArea.length+S.fSch.length+S.fTerm.length+(S.fStrat?1:0);_fb.textContent=_n?String(_n):'';}
   // Floating "you're viewing a subset" indicator — always visible while scrolling results
   var ff=document.getElementById('filter-float');
   if(ff){
@@ -5424,7 +5459,7 @@ function renderCal(){
     }
   });
   var tc=confl.size/2;
-  hdEl.innerHTML='<b style="font-family:Georgia,serif;font-size:16px;color:var(--blue)">Calendar</b> <span style="font-size:12px;color:var(--t2)">'+ents.length+' meetings &middot; '+(tc>0?'<span style="color:var(--er);font-weight:700">'+tc+' conflict'+(tc>1?'s':'')+'!</span>':'<span style="color:var(--ok)">No conflicts &#10003;</span>')+'</span>';
+  hdEl.innerHTML='<b style="font-family:var(--display);font-size:16px;color:var(--blue)">Calendar</b> <span style="font-size:12px;color:var(--t2)">'+ents.length+' meetings &middot; '+(tc>0?'<span style="color:var(--er);font-weight:700">'+tc+' conflict'+(tc>1?'s':'')+'!</span>':'<span style="color:var(--ok)">No conflicts &#10003;</span>')+'</span>';
   var dts=Object.keys(byDate).sort(function(a,b){var ap=a.split('/').map(Number),bp=b.split('/').map(Number);return ap[0]!==bp[0]?ap[0]-bp[0]:ap[1]-bp[1];});
   var byM={};dts.forEach(function(d){var mo=d.split('/')[0];if(!byM[mo])byM[mo]=[];byM[mo].push(d);});
   var MN={1:'January',2:'February',3:'March',4:'April',5:'May',6:'June',7:'July',8:'August',9:'September',10:'October',11:'November',12:'December'};
@@ -5643,7 +5678,7 @@ function renderRules(){
     +'<div class="rules-row"><span class="l">Total program credits</span><span class="v">'+RULES.programTotal.toFixed(1)+'</span></div>'
     +'<div class="rules-row"><span class="l">Total elective credits needed</span><span class="v">'+RULES.electivesToGrad.toFixed(1)+'</span></div>'
     +'</div>'
-    +'<h3 style="font-family:Georgia,serif;font-size:14px;color:var(--blue);margin-top:14px">Spring 2027</h3>'
+    +'<h3 style="font-family:var(--display);font-size:14px;color:var(--blue);margin-top:14px">Spring 2027</h3>'
     +'<div style="margin-top:6px">'
     +(RULES.core.length?RULES.core.map(function(c){return '<div class="rules-row"><span class="l">'+c.n+' '+c.t+'</span><span class="v">'+fmtCr(c.cr)+' credits</span></div>';}).join(''):'<div class="rules-row"><span class="l" style="color:var(--t2)">No core courses this term (electives only)</span><span class="v"></span></div>')
     +(RULES.core.length?'<div class="rules-row"><span class="l">Core subtotal</span><span class="v">'+fmtCr(cc)+' credits</span></div>':'')
@@ -5655,7 +5690,7 @@ function renderRules(){
     +(ec>COHORT.cap?'<div class="alert a-er">&#9888; Over '+COHORT.cap+' credits elective cap!</div>':'')
     +(ec>0&&tc<9?'<div class="alert a-wr">&#9888; Below 9 credits minimum</div>':'')
     +(ec>=4.5&&ec<=COHORT.cap&&tc>=9?'<div class="alert a-ok">&#10003; On track'+(IS_SPRING?' &mdash; check DegreeWorks to officially review graduation progress':' &mdash; '+fmtCr(sprElec)+' elective credits left for Spring')+'</div>':'')
-    +(IS_SPRING?'':'<h3 style="font-family:Georgia,serif;font-size:14px;color:var(--blue);margin-top:14px">Spring 2027 (Projected)</h3>'
+    +(IS_SPRING?'':'<h3 style="font-family:var(--display);font-size:14px;color:var(--blue);margin-top:14px">Spring 2027 (Projected)</h3>'
     +'<div style="margin-top:6px">'
     +'<div class="rules-row"><span class="l">Projected spring core</span><span class="v">'+Number(COHORT.sprCore||0).toFixed(1)+' credits</span></div>'
     +'<div class="rules-row"><span class="l">Remaining electives</span><span class="v">'+fmtCr(sprElec)+' credits</span></div>'
