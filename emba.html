@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Electivity — EMBA Spring 2027 Course Planner</title>
 <meta name="description" content="Plan your Rice Business EMBA electives for Spring 2027 — filter by area and schedule, spot conflicts, build your calendar, and copy CRNs for ESTHER.">
@@ -65,7 +65,7 @@
 --display:'Atkinson Hyperlegible','Hanken Grotesk',system-ui,sans-serif;  /* Regina 10/8: accessible sans-serif for headers/subheaders */
   /* Legacy aliases */
   --bg:#F0F3F8; --card:#ffffff; --bd:#E4E4E0;
-  --tx:#141414; --t2:#5C5C58; --t3:#ADADAA;
+  --tx:#141414; --t2:#5C5C58; --t3:#6B6B67;
   --ok:#4F7D12; --wr:#9A7515; --er:#943535;
   --gold:#9A7515; --gold-l:#FBF5E6;
   --amber-400:#C9A227; --rose-400:#C07070; --rose-600:#7A2828; --rose-800:#4A1414;
@@ -212,14 +212,17 @@ a{color:var(--text-link)}
   .nav-powered .cent-mark{height:19px}
   .nav-rice{height:19px}
   .nav-school-pill{padding:4px 9px}
-  /* Bottom bar: stack status over actions; 2x2 grid — Save/Load row above Copy CRNs/Reset */
-  .bottom{flex-direction:column;align-items:stretch;gap:8px;padding:8px 14px 10px}
+  /* Amith 10/13: status over ONE row of four buttons (was a 2x2 grid that took too much room in Safari) */
+  .bottom{flex-direction:column;align-items:stretch;gap:7px;padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
   .bb-left{min-width:0;width:100%}
   .bb-prog{width:100%}
   .bb-cr-label{display:none}
-  .bottom .bb-r{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
-  .bb-r button{justify-content:center}
-  body{padding-bottom:150px}
+  .bottom .bb-r{display:grid;grid-template-columns:1fr 1fr 1.35fr 1fr;gap:6px;width:100%}
+  .bb-r button{justify-content:center;min-height:40px;padding:8px 6px;font-size:12px !important;gap:5px}
+  .bb-r button svg{width:13px;height:13px}
+  .bb-long{display:none}
+  body{padding-bottom:112px}
+  .toast{bottom:118px}
 }
 @media(max-width:480px){
   /* True phone width: keep both stacks + both brand marks, shrunk to fit with no horizontal scroll */
@@ -277,9 +280,9 @@ a{color:var(--text-link)}
 }
 mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-weight:inherit}
 .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--text-muted);pointer-events:none}
-.search-input{width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--gray-100);border-radius:9px;background:var(--gray-50);font-family:inherit;font-size:14px;color:var(--text-primary);outline:none;transition:border-color .12s,background .12s}
+.search-input{width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--gray-500);border-radius:9px;background:var(--gray-50);font-family:inherit;font-size:14px;color:var(--text-primary);outline:none;transition:border-color .12s,background .12s}
 .search-input::placeholder{color:var(--text-muted)}
-.search-input:focus{border-color:var(--navy-400);background:#fff;box-shadow:0 0 0 3px rgba(78,106,155,.1)}
+.search-input:focus{border-color:var(--navy-600);background:#fff;box-shadow:0 0 0 3px rgba(78,106,155,.55)}
 .pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
 .pill-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .pill-lbl{font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;min-width:80px;flex-shrink:0;padding-top:4px}
@@ -293,7 +296,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .ff-txt b{color:#fff}.ff-sub{color:rgba(255,255,255,.6);font-weight:500}
 .ff-clear{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;font-family:inherit;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0}
 .ff-clear:hover{background:rgba(255,255,255,.2)}.ff-clear svg{width:13px;height:13px}
-@media(max-width:680px){.filter-float{bottom:164px;font-size:12px;gap:8px;padding:7px 8px 7px 12px;white-space:nowrap}.ff-word{display:none}.avail-cur{display:none}}
+@media(max-width:680px){.filter-float{bottom:124px;font-size:12px;gap:8px;padding:7px 8px 7px 12px;white-space:nowrap}.ff-word{display:none}.avail-cur{display:none}}
 .ca-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:8px}
 
 /* ════════════════════════════════════════
@@ -431,15 +434,19 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .dv-ct{font-size:12px;color:rgba(255,255,255,.5);font-weight:400;text-transform:none;letter-spacing:0}
 
 .crd{background:#fff;border-radius:12px;padding:14px 16px 0;margin-bottom:10px;border:1.5px solid var(--gray-100);cursor:pointer;transition:border-color 140ms,box-shadow 140ms,background 140ms;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+/* Amith 10/13: green means selected only. Hover is a neutral highlight, and only on devices with a real pointer
+   (phones/tablets get no hover, so a tap no longer leaves a sticky green card). */
+@media (hover:hover) and (pointer:fine){
 .crd:hover{border-color:var(--navy-300);box-shadow:0 4px 16px rgba(22,40,72,.10)}
-.crd:hover:not(.sel):not(.mand){background:var(--green-50);border-color:var(--green-500)}
+.crd:hover:not(.sel):not(.mand){background:var(--navy-50)}
+}
 .crd.sel{border:2px solid var(--green-700);background:var(--green-50);box-shadow:0 4px 16px rgba(22,40,72,.12)}
 .crd.mand{border:1.5px solid var(--navy-300);background:var(--navy-50);cursor:default}
 .crd.cfl{border:2px solid var(--rose-400);background:var(--rose-50)}
 .crd.grayed{opacity:.32;pointer-events:none}
 
 .crd-top{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;margin-bottom:6px}
-.ckc{width:22px;height:22px;border-radius:6px;border:2px solid var(--gray-200);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;transition:all 140ms;margin-top:1px}
+.ckc{width:22px;height:22px;border-radius:6px;border:2px solid var(--gray-500);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;transition:all 140ms;margin-top:1px}
 .crd.sel .ckc{background:var(--navy-900);border-color:var(--navy-900)}
 .crd.mand .ckc{background:var(--navy-900);border-color:var(--navy-900)}
 .tick{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:var(--navy-900);flex:0 0 auto;vertical-align:-3px}
@@ -502,7 +509,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 /* spring prerequisite gate (checkbox) */
 .prereq-gate{display:flex;gap:10px;align-items:flex-start;margin:0 16px 14px;padding:10px 12px;background:var(--amber-50);border:1px solid var(--amber-100);border-left:3px solid var(--amber-500);border-radius:9px;cursor:pointer}
 .prereq-gate.pg-on{background:var(--green-50);border-color:var(--green-100);border-left-color:var(--green-500)}
-.prereq-gate .pg-box{width:17px;height:17px;flex:0 0 auto;margin-top:1px;accent-color:var(--green-500);cursor:pointer}
+.prereq-gate .pg-box{width:20px;height:20px;flex:0 0 auto;margin-top:1px;accent-color:var(--green-500);cursor:pointer}
 .prereq-gate .pg-txt{font-size:12px;line-height:1.5;color:var(--amber-700)}
 .prereq-gate.pg-on .pg-txt{color:var(--green-700)}
 .prereq-gate .pg-txt b{color:var(--navy-900)}
@@ -631,7 +638,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .crn-ref-hd{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px}
 .crn-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
 .crn-chip{background:rgba(255,255,255,.12);color:#fff;padding:6px 14px;border-radius:7px;font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:.06em;border:1px solid rgba(255,255,255,.2)}
-.crn-note{display:flex;align-items:center;gap:6px;background:rgba(201,162,39,.15);color:var(--amber-300);padding:7px 10px;border-radius:6px;font-size:12px;font-weight:600;border:.5px solid rgba(201,162,39,.3);margin-bottom:12px}
+.crn-note{display:flex;align-items:center;gap:6px;background:rgba(201,162,39,.15);color:#E3C86A;padding:7px 10px;border-radius:6px;font-size:12px;font-weight:600;border:.5px solid rgba(201,162,39,.3);margin-bottom:12px}
 .crn-note svg{width:12px;height:12px;flex-shrink:0}
 .btn-copy-crns{width:100%;background:var(--green-500);color:#fff;border:none;border-radius:8px;padding:11px 16px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity 140ms,background 140ms}
 .btn-copy-crns:hover{background:var(--green-700)}
@@ -639,6 +646,16 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .btn-copy-crns svg{width:14px;height:14px}
 .pwrd{text-align:center;padding:14px 0 6px}
 
+/* ════════════════════════════════════════
+   ACCESSIBILITY (WCAG 2.1 AA audit, 2026-10-13)
+════════════════════════════════════════ */
+@media (max-height:500px){.nav{position:static}.seg{top:0}}  /* phones in landscape: only the tabs stay pinned, more room for content */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.pos-tscroll:focus-visible,.ckc:focus-visible,.exp-btn:focus-visible,.sec-wrap:focus-visible,.sec-item:focus-visible,.tour-pop:focus-visible{outline:2px solid var(--navy-500);outline-offset:2px}
+.ckc{cursor:pointer}
+.cf-tag{display:inline-block;font-size:.85em;font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:var(--rose-700);margin-bottom:1px}
+.nav-powered,.av-powered,.lf-powered,.pwrd-logo{min-height:24px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 /* ════════════════════════════════════════
    CALENDAR TAB
 ════════════════════════════════════════ */
@@ -649,10 +666,12 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .cal th:first-child{border-right:1px solid rgba(255,255,255,.08)}
 .cal td{padding:5px;border:.5px solid var(--gray-100);vertical-align:top;min-width:88px}
 .cal .dt{font-weight:700;background:var(--navy-50);white-space:nowrap;width:72px;font-size:12px;color:var(--navy-600);font-family:var(--mono);letter-spacing:.02em;padding:6px 8px;border-right:1px solid var(--navy-100);vertical-align:top}
+.dt-day{display:block;font-family:var(--display);font-size:15px;font-weight:700;color:var(--navy-900);letter-spacing:0;line-height:1.15}  /* Amith 10/13: day is the primary label */
+.dt-date{display:block;font-size:11px;font-weight:500;color:var(--navy-600);margin-top:2px}  /* navy-600 on navy-50 passes 4.5:1 (navy-400 was 2.96:1) */
 .cal-ev{border-radius:6px;padding:5px 8px;margin:2px 0;font-size:12px;line-height:1.45;border-left:3px solid;transition:opacity 120ms}
 .cal-ev:hover{opacity:.82}
 .ev-title{font-weight:700;margin-bottom:1px}
-.ev-time{font-size:12px;color:inherit;opacity:.7;font-family:var(--mono)}
+.ev-time{font-size:12px;color:inherit;font-family:var(--mono)}  /* full opacity for 4.5:1 */
 .c-core  {background:var(--navy-50);  border-color:var(--navy-500); color:var(--navy-700)}
 .c-elec  {background:var(--green-50); border-color:var(--green-500);color:var(--green-700)}
 .c-conf  {background:var(--rose-50);  border-color:var(--rose-500); color:var(--rose-700);outline:1.5px solid var(--rose-300);outline-offset:-1px}
@@ -660,14 +679,17 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
   /* Regina 10/8: fit Date/Morning/Afternoon/Evening on one screen (important for evening-only students
      whose classes are all in the Evening column, which was previously off-screen to the right). */
   .cw{overflow-x:hidden}
-  .cal{min-width:0;table-layout:fixed;font-size:9.5px}
-  .cal th{padding:6px 2px;font-size:8.5px;letter-spacing:.01em;text-align:center}
-  .cal th:first-child{width:36px}   /* Date column narrow; the 3 time columns get the rest */
+  /* Amith 10/13: text about 1px larger; all four columns still fit at 375px */
+  .cal{min-width:0;table-layout:fixed;font-size:10.5px}
+  .cal th{padding:6px 2px;font-size:9.5px;letter-spacing:.01em;text-align:center}
+  .cal th:first-child{width:40px}   /* Date column narrow; the 3 time columns get the rest */
   .cal td{padding:3px 2px;min-width:0}
-  .cal .dt{width:34px;font-size:9.5px;padding:5px 2px;text-align:center;white-space:normal}
-  .cal-ev{padding:3px 3px;font-size:9.5px;line-height:1.28;margin:2px 0;border-left-width:2px;border-radius:4px;word-break:break-word}
-  .cal-ev b{font-size:9.5px}
-  .ev-time{font-size:9px}
+  .cal .dt{width:38px;font-size:10.5px;padding:5px 2px;text-align:center;white-space:normal}
+  .dt-day{font-size:12.5px}
+  .dt-date{font-size:9px;margin-top:1px}
+  .cal-ev{padding:3px 3px;font-size:10.5px;line-height:1.28;margin:2px 0;border-left-width:2px;border-radius:4px;word-break:break-word}
+  .cal-ev b{font-size:10.5px}
+  .ev-time{font-size:10px}
 }
 .c-spec  {background:var(--gray-50);  border-color:var(--gray-500); color:var(--gray-700)}
 .cal-empty{font-size:12px;color:var(--gray-300);padding:6px 4px;font-style:italic}
@@ -686,7 +708,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .btn-cal-export svg{width:14px;height:14px}
 .tent-banner{background:var(--navy-50);border:1px solid var(--navy-200);border-radius:8px;padding:13px 16px;margin-bottom:14px;font-size:13px;line-height:1.55;color:var(--navy-700);font-weight:500}
 .spr-card{background:#fff;border-radius:10px;padding:12px 16px;margin-bottom:8px;border:1.5px solid var(--gray-100);box-shadow:0 1px 4px rgba(0,0,0,.04);transition:background .12s,border-color .12s,box-shadow .12s}
-.spr-card:hover{background:var(--green-50);border-color:var(--green-500);box-shadow:0 4px 16px rgba(22,40,72,.10)}
+@media (hover:hover) and (pointer:fine){.spr-card:hover{background:var(--navy-50);border-color:var(--navy-300);box-shadow:0 4px 16px rgba(22,40,72,.10)}}  /* Amith 10/13: neutral hover, pointer devices only */
 .spr-desc{margin:8px 0 2px;font-size:12px;line-height:1.6;color:var(--text-muted)}
 .spr-det>summary{display:flex;align-items:center;justify-content:flex-end;gap:4px;padding:8px 0;margin-top:8px;font-size:12px;font-weight:600;color:var(--navy-500);cursor:pointer;user-select:none;list-style:none;border-top:1px solid var(--gray-100);letter-spacing:.01em}
 .spr-det>summary::-webkit-details-marker{display:none}
@@ -748,7 +770,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .td-act{text-align:center;font-size:12px;color:var(--text-muted);font-family:var(--mono)}
 .tr-done .td-num,.tr-done .td-ti,.tr-done .td-cr{color:var(--gray-300)}
 .td-rm{width:28px;text-align:center}
-.rm-btn{background:none;border:none;padding:3px 5px;cursor:pointer;color:var(--gray-300);border-radius:4px;transition:color 120ms,background 120ms;display:inline-flex;align-items:center;justify-content:center}
+.rm-btn{background:none;border:none;padding:3px 5px;cursor:pointer;color:var(--gray-600);min-width:24px;min-height:24px;border-radius:4px;transition:color 120ms,background 120ms;display:inline-flex;align-items:center;justify-content:center}
 .rm-btn:hover{color:var(--rose-700);background:var(--rose-50)}
 .rm-btn svg{width:13px;height:13px}
 .auto-badge{display:inline-block;background:var(--green-50);color:var(--green-700);border:.5px solid var(--green-400);border-radius:4px;padding:1px 6px;font-size:12px;font-weight:700;letter-spacing:.03em}
@@ -756,7 +778,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .crn-ref-plan .crn-ref-hd{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px}
 .crn-ref-plan .crn-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
 .crn-ref-plan .crn-chip{background:rgba(255,255,255,.12);color:#fff;padding:7px 16px;border-radius:8px;font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:.06em;border:1px solid rgba(255,255,255,.2)}
-.crn-ref-plan .crn-note{display:flex;align-items:center;gap:6px;background:rgba(201,162,39,.15);color:var(--amber-300);padding:8px 12px;border-radius:7px;font-size:12px;font-weight:600;border:.5px solid rgba(201,162,39,.3);margin-bottom:14px}
+.crn-ref-plan .crn-note{display:flex;align-items:center;gap:6px;background:rgba(201,162,39,.15);color:#E3C86A;padding:8px 12px;border-radius:7px;font-size:12px;font-weight:600;border:.5px solid rgba(201,162,39,.3);margin-bottom:14px}
 .btn-copy-all{width:100%;background:var(--green-500);color:#fff;border:none;border-radius:9px;padding:13px 20px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 140ms,background 140ms}
 .btn-copy-all:hover{background:var(--green-700)}
 .btn-copy-all svg{width:15px;height:15px}
@@ -869,6 +891,8 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 </style>
 </head>
 <body>
+<div class="sr-only" role="region" aria-label="Page title"><h1 id="page-h1">Electivity course planner</h1></div>
+<div id="sr-live" class="sr-only" role="status" aria-live="polite"></div>
 
 <!-- ══ ELECTIVITY v2 — INLINE SVG SYMBOLS (no CDN) ══ -->
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
@@ -936,7 +960,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 <!-- GUIDED TOUR -->
 <div class="tour-ov" id="tour-ov">
   <div class="tour-spot" id="tour-spot"></div>
-  <div class="tour-pop" id="tour-pop">
+  <div class="tour-pop" id="tour-pop" role="dialog" aria-modal="true" aria-labelledby="tour-title" aria-describedby="tour-text" tabindex="-1">
     <div class="tour-top"><span class="tour-step-n" id="tour-step-n"></span><button class="tour-skip" onclick="tourEnd()">Skip tour</button></div>
     <div class="tour-title" id="tour-title"></div>
     <div class="tour-text" id="tour-text"></div>
@@ -946,7 +970,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 
 <!-- LANDING -->
 <div class="screen active" id="screen-landing">
-<div class="landing">
+<div class="landing" role="main">
 <div class="landing-inner">
   <div class="landing-logo-wrap">
     <span class="landing-mark el-mark" role="img" aria-label="Electivity"></span>
@@ -968,7 +992,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
     New here? <b>Take a 60-second tour</b>
   </button>
   <div class="landing-footer">
-    <div class="lf-prep"><span class="lf-by">Prepared for</span><span class="lf-rice-pill"><span class="rice-mark" role="img" aria-label="Rice Business"></span></span></div><a class="lf-powered" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener"><span class="lf-by">Powered by</span><span class="cent-mark cent-lg-dark cent-on-dark"></span></a>
+    <div class="lf-prep"><span class="lf-by">Prepared for</span><span class="lf-rice-pill"><span class="rice-mark" role="img" aria-label="Rice Business"></span></span></div><a class="lf-powered" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener"><span class="lf-by">Powered by</span><span class="cent-mark cent-lg-dark cent-on-dark" role="img" aria-label="99th Centile Solutions"></span></a>
   </div>
 </div>
 </div>
@@ -977,7 +1001,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 
 <!-- AVAILABILITY -->
 <div class="screen" id="screen-avail">
-<div class="avail-wrap"><div class="avail-inner">
+<div class="avail-wrap" role="main"><div class="avail-inner">
   <span class="avail-logo el-mark" role="img" aria-label="Electivity"></span>
   <div class="avail-cohort">EMBA &middot; Class of 2027 &middot; Spring 2027</div>
   <div class="qcard" style="max-width:520px;width:100%">
@@ -989,18 +1013,18 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
       <p>You're assigned to one section for your core classes &mdash; we'll show that section's schedule.</p>
       <div class="opts" id="section-opts"></div>
     </div>
-    <div class="navb"><button class="bp" id="avail-btn" disabled onclick="launchApp()" style="padding:10px 22px;font-size:13px;font-weight:600;border-radius:7px;display:inline-flex;align-items:center;gap:6px">Continue <svg width="14" height="14"><use href="#i-arrow-right"/></svg></button></div><div class="qcard-foot"><a class="mk-link" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener">Powered by <span class="cent-mark cent-mark-lg"></span></a></div>
+    <div class="navb"><button class="bp" id="avail-btn" disabled onclick="launchApp()" style="padding:10px 22px;font-size:13px;font-weight:600;border-radius:7px;display:inline-flex;align-items:center;gap:6px">Continue <svg width="14" height="14"><use href="#i-arrow-right"/></svg></button></div><div class="qcard-foot"><a class="mk-link" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener">Powered by <span class="cent-mark cent-mark-lg" role="img" aria-label="99th Centile Solutions"></span></a></div>
   </div>
 </div></div>
 </div>
 
 <!-- MAIN APP -->
 <div class="screen" id="screen-app" style="background:var(--navy-900);min-height:100vh;position:relative">
-<div class="nav">
+<div class="nav" role="banner">
 <div class="nav-row">
   <div class="nav-brand">
     <span class="nav-logo-mark el-mark" role="img" aria-label="Electivity"></span>
-    <a class="nav-powered" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener"><span class="nav-prep-lbl">Powered by</span><span class="cent-mark cent-on-dark"></span></a>
+    <a class="nav-powered" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener"><span class="nav-prep-lbl">Powered by</span><span class="cent-mark cent-on-dark" role="img" aria-label="99th Centile Solutions"></span></a>
   </div>
   <div class="nav-id">
     <div class="nav-t2"><span class="nav-cohort">EMBA</span><span class="nav-badge">SP27</span></div>
@@ -1008,7 +1032,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
   </div>
 </div>
 </div>
-<div class="wrap">
+<div class="wrap" role="main">
   <div class="seg">
     <button class="seg-b on" id="tb-courses" onclick="showTab('courses')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -1034,7 +1058,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
   <div class="pnl on" id="pnl-courses">
     <div class="filter-wrap">
       <div class="search-row">
-        <div class="search-wrap"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="search-input" type="text" id="srch" placeholder="Search title, instructor, area, or CRN &mdash; then press Search" oninput="toggleSearchClear()" onkeydown="if(event.key==='Enter'){event.preventDefault();submitSearch();}"><button type="button" id="srch-clear" class="srch-clear" onclick="clearSearch()" title="Clear search" aria-label="Clear search">&#10005;</button></div>
+        <div class="search-wrap"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="search-input" type="search" id="srch" aria-label="Search courses by title, instructor, area, or CRN" placeholder="Search title, instructor, area, or CRN &mdash; then press Search" oninput="toggleSearchClear()" onkeydown="if(event.key==='Enter'){event.preventDefault();submitSearch();}"><button type="button" id="srch-clear" class="srch-clear" onclick="clearSearch()" title="Clear search" aria-label="Clear search">&#10005;</button></div>
         <button class="btn-search" onclick="submitSearch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
       </div>
       <button type="button" class="fbtn" onclick="toggleFilters()"><span style="display:flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg> Filters <span class="fbtn-badge" id="fbtn-badge"></span></span><svg class="fbtn-cv" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -1072,7 +1096,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
         </div>
       </div>
     </div>
-    <div class="grid"><div id="course-list"></div>
+    <div class="grid"><h2 class="sr-only">Courses</h2><div id="course-list"></div>
     <div class="side">
       <h3>Semester Summary</h3>
       <div class="side-credits">
@@ -1093,7 +1117,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
           <svg><use href="#i-copy"/></svg> Copy all CRNs
         </button>
       </div>
-      <div class="pwrd" style="padding:16px 16px 8px"><a class="av-powered" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener">Powered by <span class="cent-mark cent-mark-lg"></span></a></div>
+      <div class="pwrd" style="padding:16px 16px 8px"><a class="av-powered" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener">Powered by <span class="cent-mark cent-mark-lg" role="img" aria-label="99th Centile Solutions"></span></a></div>
     </div>
     </div>
   </div>
@@ -1135,23 +1159,23 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
     </div>
     <div id="plan-body"></div>
   </div>
-  <div class="pwrd pwrd-brand"><div class="pwrd-fb">Found issues? Send feedback to <a href="mailto:electivity@99thcentile.com">electivity@99thcentile.com</a></div><a class="pwrd-logo" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener"><span class="pwrd-by">Powered by</span><span class="cent-mark cent-mark-lg"></span></a></div>
-  <div class="print-foot">Prepared for Rice Business &mdash; Powered by <span class="cent-mark cent-mark-sm"></span> &middot; 99thcentile.com</div>
+  <div class="pwrd pwrd-brand"><div class="pwrd-fb">Found issues? Send feedback to <a href="mailto:electivity@99thcentile.com">electivity@99thcentile.com</a></div><a class="pwrd-logo" href="https://99thcentile.com/electivity?utm_source=electivity&utm_medium=planner&utm_campaign=emba-sp27" target="_blank" rel="noopener"><span class="pwrd-by">Powered by</span><span class="cent-mark cent-mark-lg" role="img" aria-label="99th Centile Solutions"></span></a></div>
+  <div class="print-foot">Prepared for Rice Business &mdash; Powered by <span class="cent-mark cent-mark-sm" role="img" aria-label="99th Centile Solutions"></span> &middot; 99thcentile.com</div>
 </div>
 <div id="filter-float" class="filter-float" style="display:none">
   <span class="ff-badge">Filtered</span>
   <span class="ff-txt"><b id="ff-count">0</b> of <b id="ff-total">0</b> <span class="ff-word">courses shown</span></span>
   <button class="ff-clear" onclick="clearF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Show all</button>
 </div>
-<div class="bottom">
+<div class="bottom" role="region" aria-label="Your plan">
   <div class="bb-left">
     <div class="bb-s" id="bb-s">No courses selected</div>
     <div class="bb-prog"><div class="bb-pf" id="bb-pf"></div></div>
     <div class="bb-cr-label" id="bb-cr-label">0 / 15 elective credits</div>
   </div>
   <div class="bb-r">
-    <button class="btn-ghost bb-secondary" onclick="savePlan()" style="font-size:12px"><svg><use href="#i-save"/></svg> Save plan</button>
-    <button class="btn-ghost bb-secondary" onclick="document.getElementById('load-inp3').click()" style="font-size:12px"><svg><use href="#i-upload"/></svg> Load plan</button>
+    <button class="btn-ghost bb-secondary" onclick="savePlan()" style="font-size:12px"><svg><use href="#i-save"/></svg> Save<span class="bb-long"> plan</span></button>
+    <button class="btn-ghost bb-secondary" onclick="document.getElementById('load-inp3').click()" style="font-size:12px"><svg><use href="#i-upload"/></svg> Load<span class="bb-long"> plan</span></button>
     <input type="file" id="load-inp3" accept=".json" onchange="loadPlan(this)" style="display:none">
     <button class="btn-copy" onclick="copyCRNs()" id="bb-copy-btn"><svg><use href="#i-copy"/></svg> Copy CRNs</button>
     <button class="btn-ghost" onclick="doReset()" style="font-size:12px"><svg><use href="#i-reset"/></svg> Reset</button>
@@ -5045,24 +5069,27 @@ function card(c,locked){
   var secB='';
   if(secs>1&&!core){   // core is auto-enrolled — no section choice, so no sections badge
     var sibs=COURSES.filter(function(x){return x.subjectCourse===c.subjectCourse;});
-    secB='<span class="chip b-sec sec-wrap" data-sectoggle="1">'+secs+' sections <svg class="sec-cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'
+    secB='<span class="chip b-sec sec-wrap" data-sectoggle="1" role="button" tabindex="0" data-fk="sw-'+c.id+'" aria-haspopup="true" aria-label="'+secs+' sections of '+esc(c.subjectCourse)+'">'+secs+' sections <svg class="sec-cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'
       +'<span class="sec-pop"><span class="sec-hd">'+esc(c.subjectCourse)+' &middot; '+secs+' sections</span>'
       +sibs.map(function(x){
         var lbl=[(x.days||'').replace(/ · /g,'/'),((x.times||'').split('·')[0]||'').trim()].filter(Boolean).join(' ');
         var cur=x.id===c.id;
         return cur
           ? '<span class="sec-item cur"><b>'+esc(x.section)+'</b><span>'+esc(lbl||'—')+' &middot; this one</span></span>'
-          : '<a class="sec-item" data-goto="'+x.id+'"><b>'+esc(x.section)+'</b><span>'+esc(lbl||'—')+'</span></a>';
+          : '<a class="sec-item" data-goto="'+x.id+'" role="button" tabindex="0"><b>'+esc(x.section)+'</b><span>'+esc(lbl||'—')+'</span></a>';
       }).join('')+'</span></span>';
   }
   var _pstat=prereqStatus(c);
   var fallChip=(!IS_SPRING&&!isSpr&&!core)?'<span class="chip" style="background:var(--rose-50);color:var(--rose-700);border-color:var(--rose-500);font-weight:700;font-size:12px">FALL ONLY</span>':'';
   var sprChip=(!IS_SPRING&&isSpr)?'<span class="chip" style="background:var(--green-50);color:var(--green-700);border-color:var(--green-500);display:inline-flex;align-items:center;gap:3px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--green-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/></svg>Also in Spring</span>':'';
   var clickA=core?'':'data-tc="'+c.id+'"';
+  // a11y: the check box is the keyboard/screen-reader control (role=checkbox); the whole card stays clickable
+  var ckA=core?'role="checkbox" aria-checked="true" aria-disabled="true" aria-label="'+esc(c.title)+', '+esc(c.section)+', required course"'
+    :'role="checkbox" tabindex="0" data-fk="ck-'+c.id+'" aria-checked="'+(isSel?'true':'false')+'"'+(isLocked?' aria-disabled="true"':'')+' aria-label="Select '+esc(c.title)+', '+esc(srSec(c.section))+', '+c.credits+' credits'+(hasCf?(isSel?', conflicts with ':', potential conflict with ')+esc(cf.map(function(x){return x.t||x.w;}).join(' and ')):'')+'"';
 
   // ── Area chip(s) in meta row — all areas from courseArea
   var areaChips=c.courseArea.split(';').map(function(a){
-    var at=a.trim();return at?'<span class="chip '+areaCls(at)+'">'+esc(at)+'</span>':'';
+    var at=a.trim();return at?'<span class="chip '+areaCls(at)+'">'+esc(at)+'</span><span class="sr-only">, </span>':'';
   }).join('');
 
   // ── Conflict banner
@@ -5080,10 +5107,10 @@ function card(c,locked){
     meetHtml='<div class="meetings-list">'+dates.map(function(dt,i){
       var dy=daysList[i]||daysList[0]||'';
       var tm=timesList[i]||timesList[0]||'';
-      return '<div class="meeting-row">'+esc(dt)+(dy?' ('+esc(dy)+')':'')+' &nbsp;'+esc(tm)+'</div>';
+      return '<div class="meeting-row">'+srPair(esc(dt)+(dy?' ('+esc(dy)+')':'')+' &nbsp;'+esc(tm),srDate(dt)+(dy?', '+srDays(dy):'')+(tm?', '+srTime(tm):''))+'</div>';
     }).join('')+'</div>';
   } else if(c.termDates){
-    meetHtml='<div class="meeting-row">'+esc(c.termDates)+'</div>';
+    meetHtml='<div class="meeting-row">'+srPair(esc(c.termDates),srDate(c.termDates))+'</div>';
   }
 
   // CRN row
@@ -5143,21 +5170,21 @@ function card(c,locked){
 
   return '<div class="'+cls+'" id="crd-'+c.id+'">'
     +'<div class="crd-top" '+clickA+'>'
-    +'<div class="ckc">'+chk+'</div>'
+    +'<div class="ckc" '+ckA+'>'+chk+'</div>'
     +'<div class="cb">'
-    +'<div class="cnum">'+hlText(c.section)+' \u00b7 '+c.credits+' credits '+(c.schedule===c.term?'':schBadge(c.schedule)+' ')+termBadge(c.term)+blkB+secB+' '+crnD+' '+fallChip+' '+sprChip+'</div>'
+    +'<div class="cnum">'+srPair(hlText(c.section),srSec(c.section))+'<span aria-hidden="true"> \u00b7 </span><span class="sr-only">, </span>'+c.credits+' credits '+(c.schedule===c.term?'':schBadge(c.schedule)+' ')+termBadge(c.term)+blkB+secB+' '+crnD+' '+fallChip+' '+sprChip+'</div>'
     +'<h3>'+hlText(c.title)+'</h3>'
     +'<div class="cmeta">'+areaChips
-    +(c.termDates?'<span style="font-size:12px;color:var(--text-muted)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> '+esc(c.termDates)+'</span>':'')
-    +(c.days?'<span style="font-size:12px;color:var(--text-muted)">'+esc(c.days)+'</span>':'')
-    +(timeDisp?'<span style="font-size:12px;color:var(--text-muted)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> '+esc(timeDisp)+'</span>':'')
+    +(c.termDates?'<span style="font-size:12px;color:var(--text-muted)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> '+srPair(esc(c.termDates),srDate(c.termDates))+'</span>':'')
+    +(c.days?'<span style="font-size:12px;color:var(--text-muted)">'+srPair(esc(c.days),srDays(c.days))+'</span>':'')
+    +(timeDisp?'<span style="font-size:12px;color:var(--text-muted)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> '+srPair(esc(timeDisp),srTime(timeDisp))+'</span>':'')
     +(c.instructors.length?'<span style="font-size:12px;color:var(--text-muted)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> '+hlText(c.instructors.join(' / '))+'</span>':'')
     +'</div>'
     +unlockHint
     +cfHtml
     +'</div></div>'
     +prereqGate
-    +'<div class="exp-btn" data-xp="'+c.id+'">'+toggleLbl+'</div>'
+    +'<div class="exp-btn" data-xp="'+c.id+'" role="button" tabindex="0" data-fk="xp-'+c.id+'" aria-expanded="'+(isExp?'true':'false')+'" aria-label="'+(isExp?'Hide details for ':'Details for ')+esc(c.title)+'">'+toggleLbl+'</div>'
     +'<div class="crd-det">'+det+descHtml+preHtml+unlockHtml+'</div>'
     +'</div>';
 }
@@ -5226,20 +5253,24 @@ document.addEventListener('click',function(e){
   if(pcfm){var pid=pcfm.getAttribute('data-pcfm');
     if(pcfm.checked){S.prereqOK[pid]=1;if(S.sel.indexOf(pid)<0)S.sel.push(pid);}
     else{delete S.prereqOK[pid];var pk=S.sel.indexOf(pid);if(pk>=0)S.sel.splice(pk,1);}
-    updateNav();updateSide();applyF();return;}
+    updateNav();updateSide();applyF();
+    (function(){var _c=byId(pid);(window.a11ySay&&a11ySay((pcfm.checked?'Prerequisite confirmed. Added ':'Removed ')+(_c?_c.title:'course')));setTimeout(function(){var n=document.querySelector('[data-pcfm="'+pid+'"]');if(n)n.focus();},0);})();
+    return;}
   var tc=e.target.closest('[data-tc]');
   if(tc){var id=tc.getAttribute('data-tc');var locked=getLocked();if(locked.has(id))return;var i=S.sel.indexOf(id);
-    if(i>=0){S.sel.splice(i,1);}
+    if(i>=0){S.sel.splice(i,1);var _rc=byId(id);(window.a11ySay&&a11ySay('Removed '+(_rc?_rc.title:'course')));}
     else{
       var c=byId(id);
       if(IS_SPRING&&c&&prereqStatus(c)==='unverified'&&!S.prereqOK[id]){
         // must confirm via the on-card checkbox first — draw attention to it (no card expand)
         var gt=document.querySelector('#crd-'+id+' .prereq-gate');
+        (window.a11ySay&&a11ySay('Not added yet. '+(c?c.title:'This course')+' has a prerequisite. Tick the prerequisite check box under the course to confirm you have completed it.'));
+        var _pg=document.querySelector('#crd-'+id+' .pg-box');if(_pg)window.__a11yFocus=_pg;
         if(gt){gt.classList.remove('pg-flash');void gt.offsetWidth;gt.classList.add('pg-flash');setTimeout(function(){gt.classList.remove('pg-flash');},1500);
           var r=gt.getBoundingClientRect();if(r.top<84||r.bottom>window.innerHeight-70)gt.scrollIntoView({block:'center',behavior:'smooth'});}
         return;
       }
-      S.sel.push(id);
+      S.sel.push(id);(function(){var _cf=gCf(id);(window.a11ySay&&a11ySay('Added '+(c?c.title:'course')+(_cf.length?'. Time conflict with '+_cf.map(function(x){return x.t||x.w;}).join(' and '):'')));})();
     }
     updateNav();updateSide();applyF();return;}
   var xp=e.target.closest('[data-xp]');
@@ -5477,12 +5508,12 @@ function renderCal(){
       function rEv(e){
         var isC=confl.has(d+'-'+e.id);
         var cl=isC?'c-conf':e.core?'c-core':'c-elec';
-        var tbLabel='';if(e.term&&e.term!=='EFIII'){tbLabel='<span style="font-size:12px;opacity:.75;font-family:var(--mono)">'+esc(e.term)+(e.block?' · Blk '+esc(e.block):'')+'</span>';}return '<div class="cal-ev '+cl+'"><b>'+esc(e.sec)+'</b><br>'+esc(e.ti.substring(0,22))+(e.allDay?'<br><span style="font-size:12px;font-weight:700">All day &middot; trip</span>':(e.start?'<br><span style="font-size:12px">'+esc(e.start)+'-'+esc(e.end)+'</span>':''))+(tbLabel?'<br>'+tbLabel:'')+(isC?'<br><span style="color:var(--er);font-size:12px;font-weight:700">&#9888; CONFLICT</span>':'')+'</div>';
+        var tbLabel='';if(e.term&&e.term!=='EFIII'){tbLabel='<span style="font-size:12px;font-family:var(--mono)">'+srPair(esc(e.term)+(e.block?' · Blk '+esc(e.block):''),srTime(e.term)+(e.block?', Block '+e.block:''))+'</span>';}return '<div class="cal-ev '+cl+'">'+'<b>'+srPair(esc(e.sec),srSec(e.sec))+'</b><br>'+esc(e.ti.substring(0,22))+(e.allDay?'<br><span style="font-size:12px;font-weight:700">All day &middot; trip</span>':(e.start?'<br><span style="font-size:12px">'+srPair(esc(e.start)+'-'+esc(e.end),e.start+' to '+e.end)+'</span>':''))+(tbLabel?'<br>'+tbLabel:'')+(isC?'<br><span style="color:var(--er);font-size:12px;font-weight:700">&#9888; CONFLICT</span>':'')+'</div>';
       }
       if(allDay.length&&!am.length&&!pm.length&&!eve.length){
-        html+='<tr><td class="dt">'+(DN[da]||da||'')+'<br>'+d+'</td><td colspan="3">'+allDay.map(rEv).join('')+'</td></tr>';
+        html+='<tr><td class="dt"><span class="dt-day">'+srPair(DN[da]||da||'',_DAYN[da]||DN[da]||da||'')+'</span><span class="dt-date">'+srPair(d,srDate(d))+'</span></td><td colspan="3">'+allDay.map(rEv).join('')+'</td></tr>';
       }else{
-        html+='<tr><td class="dt">'+(DN[da]||da||'')+'<br>'+d+'</td><td>'+allDay.concat(am).map(rEv).join('')+'</td><td>'+pm.map(rEv).join('')+'</td><td>'+eve.map(rEv).join('')+'</td></tr>';
+        html+='<tr><td class="dt"><span class="dt-day">'+srPair(DN[da]||da||'',_DAYN[da]||DN[da]||da||'')+'</span><span class="dt-date">'+srPair(d,srDate(d))+'</span></td><td>'+allDay.concat(am).map(rEv).join('')+'</td><td>'+pm.map(rEv).join('')+'</td><td>'+eve.map(rEv).join('')+'</td></tr>';
       }
     });
     html+='</tbody></table></div>';
@@ -5732,7 +5763,7 @@ function renderPlan(){
     }).join('');
     var tot=courseArr.reduce(function(s,c){return s+(c.cr||c.credits||0);},0);
     return '<div class="pos-sem-hd"><span class="pos-sem-title">'+title+'</span><span class="pos-sem-meta">'+subtitle+' &middot; <b>'+fmtCr(tot)+' credits</b></span></div>'
-      +'<div class="pos-tscroll"><table class="pos-table"><thead><tr><th style="width:88px">Course</th><th style="width:66px">CRN</th><th>Title</th><th style="width:34px;text-align:center">Cr</th><th style="width:26px"></th></tr></thead>'
+      +'<div class="pos-tscroll" tabindex="0" role="group" aria-label="Course table, scrolls sideways"><table class="pos-table"><thead><tr><th style="width:88px">Course</th><th style="width:66px">CRN</th><th>Title</th><th style="width:34px;text-align:center">Cr</th><th style="width:26px"><span class="sr-only">Remove</span></th></tr></thead>'
       +'<tbody>'+rows+'</tbody></table></div>';
   }
 
@@ -5754,7 +5785,7 @@ function renderPlan(){
   html+='<div class="pos-current"><div class="pos-cur-hd"><span class="pos-sem-title">Spring 2027</span>'+(IS_SPRING?'':'<span class="pos-cur-tag">Current term</span>')+'<span class="pos-cur-meta"><b>'+ec+'</b> elective credits selected</span></div>';
   if(fallCore.length){
     html+='<div style="font-size:12px;font-weight:700;color:var(--t2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;margin-top:6px">Core &mdash; JGSB Registrar enrolled (if holds lifted)</div>'
-      +'<div class="pos-tscroll"><table class="pos-table"><thead><tr><th style="width:88px">Course</th><th style="width:66px">CRN</th><th>Title</th><th style="width:34px;text-align:center">Cr</th><th style="width:26px"></th></tr></thead><tbody>'
+      +'<div class="pos-tscroll" tabindex="0" role="group" aria-label="Course table, scrolls sideways"><table class="pos-table"><thead><tr><th style="width:88px">Course</th><th style="width:66px">CRN</th><th>Title</th><th style="width:34px;text-align:center">Cr</th><th style="width:26px"><span class="sr-only">Remove</span></th></tr></thead><tbody>'
       +fallCore.map(function(c){return '<tr><td class="td-num">'+esc(c.section)+'</td><td class="td-crn stat">JGSB Enrolled</td><td class="td-ti">'+esc(c.title)+'</td><td class="td-cr">'+fmtCr(c.credits)+'</td><td></td></tr>';}).join('')
       +'</tbody></table></div>';
   }
@@ -5763,7 +5794,7 @@ function renderPlan(){
     var crnCls=/^\d+$/.test(crnD)?'td-crn':'td-crn stat';
     return '<tr><td class="td-num">'+esc(c.section)+'</td><td class="'+crnCls+'">'+crnD+'</td><td class="td-ti">'+esc(c.title)+'</td><td class="td-cr">'+fmtCr(c.credits)+'</td><td class="td-rm"><button class="rm-btn" data-rm="'+c.id+'" title="Remove">&#10005;</button></td></tr>';
   };
-  var _tblHead='<div class="pos-tscroll"><table class="pos-table"><thead><tr><th style="width:88px">Course</th><th style="width:66px">CRN</th><th>Title</th><th style="width:34px;text-align:center">Cr</th><th style="width:26px"></th></tr></thead><tbody>';
+  var _tblHead='<div class="pos-tscroll" tabindex="0" role="group" aria-label="Course table, scrolls sideways"><table class="pos-table"><thead><tr><th style="width:88px">Course</th><th style="width:66px">CRN</th><th>Title</th><th style="width:34px;text-align:center">Cr</th><th style="width:26px"><span class="sr-only">Remove</span></th></tr></thead><tbody>';
   var _tblEnd='</tbody></table></div>';
   var _secHd=function(t){return '<div style="font-size:12px;font-weight:700;color:var(--t2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;margin-top:10px">'+t+'</div>';};
   var selLabs=fallElec.filter(function(c){return c.isLab;});
@@ -5917,11 +5948,92 @@ function copyCRNs(){
   navigator.clipboard.writeText(crns.join('\n')).then(function(){showToast('CRNs copied!');}).catch(function(){showToast('Copy failed');});
 }
 
-function showToast(msg){var t=document.getElementById('toast');t.innerHTML=msg;t.style.display='block';clearTimeout(t._to);t._to=setTimeout(function(){t.style.display='none';},2500);}
+function showToast(msg){var t=document.getElementById('toast');t.innerHTML=msg;(window.a11ySay&&a11ySay(t.textContent));t.style.display='block';clearTimeout(t._to);t._to=setTimeout(function(){t.style.display='none';},2500);}
+// ── a11y: spoken versions of short dates, day codes, times and section codes (visible text stays as is)
+var _DAYN={M:'Monday',T:'Tuesday',Tu:'Tuesday',W:'Wednesday',Th:'Thursday',R:'Thursday',F:'Friday',Sa:'Saturday',Su:'Sunday',Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday',Sun:'Sunday'};
+var _MONN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function srDate(s){return String(s||'').replace(/\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/g,function(m,mo,d,y){var n=_MONN[+mo-1];if(!n)return m;return n+' '+(+d)+(y?', '+(y.length===2?'20'+y:y):'');}).replace(/\s*[-\u2013]\s*/g,' to ');}
+function srDays(s){var out=[];String(s||'').split(/\s*(?:\u00b7|,|\/|;)\s*/).forEach(function(d){d=d.trim();var n=_DAYN[d]||d;if(n&&out.indexOf(n)<0)out.push(n);});return out.join(', ');}
+function srTime(s){return String(s||'').replace(/\s*[-\u2013]\s*/g,' to ');}
+function srSec(s){return String(s||'').replace(/^(.*\d)-(\d+)$/,'$1, section $2');}
+function srPair(vis,spoken){return '<span aria-hidden="true">'+vis+'</span><span class="sr-only">'+esc(spoken)+', </span>';}  // trailing comma = a spoken pause
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 // Escapes for HTML, then wraps the current submitted search query with <mark> for highlighting.
 function hlText(s){var t=esc(s);var q=(S.q||'').trim();if(!q)return t;var qe=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');try{return t.replace(new RegExp('('+qe+')','ig'),'<mark class="hl">$1</mark>');}catch(e){return t;}}
 
+</script>
+<script>
+// ── ACCESSIBILITY LAYER (WCAG 2.1 AA audit, 2026-10-13) ─────────────────────────
+function a11ySay(msg){var l=document.getElementById('sr-live');if(!l)return;l.textContent='';setTimeout(function(){l.textContent=msg;},60);}
+(function(){
+  var h=document.getElementById('page-h1');if(h)h.textContent=document.title.replace(/\s+—\s+/,': ');
+  var seg=document.querySelector('.seg');
+  if(seg){seg.setAttribute('role','tablist');seg.setAttribute('aria-label','Planner sections');}
+  document.querySelectorAll('.seg-b').forEach(function(b){var n=b.id.replace('tb-','');b.setAttribute('role','tab');b.setAttribute('aria-controls','pnl-'+n);var p=document.getElementById('pnl-'+n);if(p){p.setAttribute('role','tabpanel');p.setAttribute('aria-labelledby',b.id);}});
+  var SEL='.seg-b,.t-pill,.spill,.f-pill,.opt';
+  function sync(el){
+    if(el.classList.contains('seg-b')){var on=el.classList.contains('on');el.setAttribute('aria-selected',on?'true':'false');el.setAttribute('tabindex',on?'0':'-1');}
+    else el.setAttribute('aria-pressed',(el.classList.contains('on')||el.classList.contains('sel'))?'true':'false');
+  }
+  function syncIn(root){if(root.matches&&root.matches(SEL))sync(root);if(root.querySelectorAll)root.querySelectorAll(SEL).forEach(sync);}
+  syncIn(document.body);
+  new MutationObserver(function(ms){ms.forEach(function(m){
+    if(m.type==='attributes'){if(m.target.matches&&m.target.matches(SEL))sync(m.target);}
+    else m.addedNodes.forEach(function(n){if(n.nodeType===1)syncIn(n);});
+  });}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+  // Tabs: arrow keys, Home, End
+  if(seg)seg.addEventListener('keydown',function(e){
+    var tabs=[].slice.call(seg.querySelectorAll('.seg-b')).filter(function(t){return t.offsetParent!==null;});
+    var i=tabs.indexOf(document.activeElement);if(i<0)return;var j=null;
+    if(e.key==='ArrowRight')j=(i+1)%tabs.length;else if(e.key==='ArrowLeft')j=(i-1+tabs.length)%tabs.length;else if(e.key==='Home')j=0;else if(e.key==='End')j=tabs.length-1;
+    if(j===null)return;e.preventDefault();tabs[j].click();tabs[j].focus();
+  });
+  // Keyboard for the non-native controls (course check box, Details, sections), and the tour dialog
+  document.addEventListener('keydown',function(e){
+    var ov=document.getElementById('tour-ov'),tourOpen=ov&&ov.style.display==='block';
+    if(tourOpen){
+      if((e.key==='Enter'||e.key===' ')&&e.target.closest&&e.target.closest('#tour-pop button')){e.stopImmediatePropagation();return;}  // let the focused button act alone
+      if(e.key==='Tab'){var f=[].slice.call(document.querySelectorAll('#tour-pop button')).filter(function(b){return b.offsetParent!==null&&!b.disabled;});
+        if(f.length){e.preventDefault();var k=f.indexOf(document.activeElement);f[e.shiftKey?(k<=0?f.length-1:k-1):(k+1)%f.length].focus();}return;}
+    }
+    if(e.key!==' '&&e.key!=='Enter')return;
+    var t=e.target;if(!t.matches||!t.matches('[role=checkbox]:not(input),[role=button]:not(button)'))return;
+    e.preventDefault();if(t.getAttribute('aria-disabled')==='true')return;
+    var fk=t.getAttribute('data-fk');t.click();
+    setTimeout(function(){var o=window.__a11yFocus;window.__a11yFocus=null;if(o&&document.contains(o)){o.focus();return;}if(fk){var n=document.querySelector('[data-fk="'+fk+'"]');if(n)n.focus();}},0);
+  },true);
+  // WCAG 2.4.11 Focus not obscured: keep the focused control clear of the sticky header/tabs and the fixed bottom bar
+  // Tell the browser where the sticky header/tabs and the fixed bottom bar are, so its own focus scrolling avoids them
+  function setScrollPad(){
+    var top=0,bot=0;
+    ['.nav','.seg'].forEach(function(q){var n=document.querySelector(q);if(!n||!n.getClientRects().length)return;var ps=getComputedStyle(n).position;if(ps!=='sticky'&&ps!=='fixed')return;var b=n.getBoundingClientRect();if(b.top<window.innerHeight/3&&b.bottom>top)top=b.bottom;});
+    var bb=document.querySelector('.bottom');if(bb&&getComputedStyle(bb).display!=='none'&&bb.getClientRects().length){bot=Math.max(0,window.innerHeight-bb.getBoundingClientRect().top);}
+    var de=document.documentElement;de.style.scrollPaddingTop=(top?top+12:0)+'px';de.style.scrollPaddingBottom=(bot?bot+12:0)+'px';
+  }
+  window.addEventListener('resize',setScrollPad);window.addEventListener('load',setScrollPad);setTimeout(setScrollPad,300);
+  document.addEventListener('click',function(){setTimeout(setScrollPad,50);},true);
+  document.addEventListener('focusin',function(e){
+    setScrollPad();
+    var el=e.target;if(!el||!el.getBoundingClientRect)return;
+    if(el.closest('.bottom,.nav,.seg,.tour-ov,.toast,.filter-float,.sec-pop'))return;  // control lives in a bar or overlay itself
+    setTimeout(function(){
+      var r=el.getBoundingClientRect(),top=0,bot=window.innerHeight;
+      ['.nav','.seg'].forEach(function(q){var n=document.querySelector(q);if(!n||!n.offsetParent)return;var ps=getComputedStyle(n).position;if(ps!=='sticky'&&ps!=='fixed')return;var b=n.getBoundingClientRect();if(b.top<window.innerHeight/3&&b.bottom>top)top=b.bottom;});
+      var bb=document.querySelector('.bottom');if(bb&&getComputedStyle(bb).display!=='none'&&bb.getClientRects().length){var t=bb.getBoundingClientRect().top;if(t<bot)bot=t;}
+      if(r.bottom>bot-8)window.scrollBy(0,r.bottom-bot+16);else if(r.top<top+8)window.scrollBy(0,r.top-top-16);
+    },60);
+  });
+  // Section pop-up: close with Escape (focus back on its badge) or when focus leaves it
+  document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;var w=document.querySelector('.sec-wrap.open');if(w){w.classList.remove('open');w.focus();}});
+  document.addEventListener('focusin',function(e){document.querySelectorAll('.sec-wrap.open').forEach(function(w){if(!w.contains(e.target))w.classList.remove('open');});});
+  // Screen changes (landing, setup, planner): move focus to the new screen so screen readers announce it
+  if(typeof showScreen==='function'){var _ss=showScreen;showScreen=function(id){var r=_ss.apply(this,arguments);setTimeout(function(){var sc=document.getElementById(id);if(!sc)return;var t=sc.querySelector('h2')||sc.querySelector('[role=main]');if(!t)return;if(!t.hasAttribute('tabindex'))t.setAttribute('tabindex','-1');t.focus({preventScroll:true});},60);return r;};}
+  // Tour: move focus into the dialog, return it afterwards
+  function focusTour(){setTimeout(function(){var ov=document.getElementById('tour-ov');if(ov&&ov.style.display==='block'){var n=document.getElementById('tour-next');if(n)n.focus();}},120);}
+  if(typeof startTour==='function'){var _st=startTour;startTour=function(){window.__tourRet=document.activeElement;var r=_st.apply(this,arguments);focusTour();return r;};}
+  if(typeof tourGo==='function'){var _tg=tourGo;tourGo=function(){var r=_tg.apply(this,arguments);focusTour();return r;};}
+  if(typeof tourEnd==='function'){var _te=tourEnd;tourEnd=function(){var r=_te.apply(this,arguments);var ret=window.__tourRet;if(ret&&ret.focus&&document.contains(ret))ret.focus();return r;};}
+})();
 </script>
 </body>
 </html>
