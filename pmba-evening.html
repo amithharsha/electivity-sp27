@@ -4438,6 +4438,8 @@ const COHORT = {rec:6, cap:11.5, total:6, sprCore:7.5, finalTerm:true, schedules
 var TERM='spring';   /* 'fall' | 'spring' - generator sets this; drives every term-specific difference */
 var IS_SPRING=(TERM==='spring');  /* derived from TERM - flip TERM and this follows */
 var S = {avail:null, section:null, sel:[], fArea:[], fSch:[], fTerm:[], fStrat:'', exp:null, sprFlt:'all', q:'', prereqOK:{}};
+// Amith 10/22: a placeholder CRN (the registrar file has none yet) must never look like a real one. Mark the course 'pending' and clear the CRN so it is not shown, copied or exported.
+COURSES.forEach(function(c){if(c.placeholderCrn){c.crnMessage='pending';c.crn='';}});
 
 function byId(id){return COURSES.find(function(c){return c.id===id;});}
 function isCore(c){return c.electiveCore==='Core';}
@@ -4527,7 +4529,7 @@ function setSection(n){
 
 // ── Required Lab (PMBA-E & PMBA-W) - Regina 9/30: one 3.0-cr lab, separate from electives;
 //    additional labs beyond the requirement count as electives. Labs = course.isLab (col BH).
-function isLabC(c){return !!(c&&c.isLab);}
+function isLabC(c){return !!(c&&c.isLab)&&labReq()>0;}   // Amith 10/22: where no lab is required (EMBA, FT, Hybrid) a lab course is an ordinary elective; before, it vanished from the Credits tab and its 3.00 credits were not counted
 function labReq(){return Number(RULES.lab)||0;}            // 0 for cohorts with no lab requirement
 function getLabSelCr(){var t=0;S.sel.forEach(function(id){var c=byId(id);if(isLabC(c))t+=c.credits;});return t;}
 function getLabReqCr(){var r=labReq();return r>0?Math.min(getLabSelCr(),r):0;}   // Regina 10/15: the required lab counts toward the semester total only once a lab is selected
@@ -4988,6 +4990,7 @@ function card(c,locked){
   if(c.crnMessage==='auto-enrolled') crnD='';
   else if(c.crnMessage==='application') crnD='<span class="chip b-tef">By application</span>';
   else if(c.crnMessage==='Separate Registration') crnD='<span class="chip b-tef">Sep. registration</span>';
+  else if(c.crnMessage==='pending') crnD='<span class="chip b-tef">CRN pending</span>';
   else if(c.crn) crnD='<span class="chip b-crn">'+esc(c.crn)+'</span>';
   var blkB=c.block?'<span class="chip b-blk">Block '+c.block+'</span>':'';
   var secB='';
@@ -5039,6 +5042,7 @@ function card(c,locked){
 
   // CRN row
   var crnRow='';
+  if(c.crnMessage==='pending') crnRow='<tr><td class="exp-lbl">CRN</td><td>Not assigned yet. It will appear here once Rice adds it.</td></tr>';
   if(c.crn&&c.crnMessage!=='auto-enrolled'){
     crnRow='<tr><td class="exp-lbl">CRN</td><td><div class="exp-crn-big">'+esc(c.crn)
       +'<button class="crn-copy-btn" onclick="copyCRNInline(event,\''+esc(c.crn)+'\',this)">'
@@ -5676,12 +5680,12 @@ function renderPlan(){
   var tord={'EFI':0,'EFIII':0,'Term 0':1,'Term 1':2,'Term 1-2':3,'Term 2':4,'Specialized':5};
   fallElec.sort(function(a,b){return(tord[a.term]||9)-(tord[b.term]||9);});
   var crns=S.sel.map(byId).filter(Boolean).filter(function(c){return c.crn&&c.crnMessage!=='auto-enrolled'&&c.crnMessage!=='application'&&c.crnMessage!=='Separate Registration';}).map(function(c){return c.crn;});
-  var specCs=S.sel.map(byId).filter(Boolean).filter(function(c){return c.crnMessage==='application'||c.crnMessage==='Separate Registration';});
+  var specCs=S.sel.map(byId).filter(Boolean).filter(function(c){return c.crnMessage==='application'||c.crnMessage==='Separate Registration'||c.crnMessage==='pending';});
 
   function semBlock(title,subtitle,courseArr,status){
     if(!courseArr.length) return '';
     var rows=courseArr.map(function(c){
-      var crnD=status==='Done'?'Done':c.crnMessage==='auto-enrolled'?'JGSB Enrolled':c.crnMessage==='application'?'Apply':c.crnMessage==='Separate Registration'?'Sep.Reg':c.crn||'-';
+      var crnD=status==='Done'?'Done':c.crnMessage==='auto-enrolled'?'JGSB Enrolled':c.crnMessage==='application'?'Apply':c.crnMessage==='Separate Registration'?'Sep.Reg':c.crnMessage==='pending'?'Pending':c.crn||'-';
       var isElec=status===''&&!isCore(c);
       var crnCls=/^\d+$/.test(crnD)?'td-crn':'td-crn stat';
       return '<tr'+(status==='Done'?' class="tr-done"':'')+'><td class="td-num">'+(c.n||c.section)+'</td><td class="'+crnCls+'">'+crnD+'</td><td class="td-ti">'+(c.t||c.title)+'</td><td class="td-cr">'+fmtCr(c.cr||c.credits)+'</td>'+(isElec?'<td class="td-rm"><button class="rm-btn" data-rm="'+c.id+'" title="Remove">&#10005;</button></td>':'<td></td>')+'</tr>';
@@ -5715,18 +5719,18 @@ function renderPlan(){
       +'</tbody></table></div>';
   }
   var _row=function(c){
-    var crnD=c.crnMessage==='application'?'Apply':c.crnMessage==='Separate Registration'?'Sep.Reg':c.crn||'-';
+    var crnD=c.crnMessage==='application'?'Apply':c.crnMessage==='Separate Registration'?'Sep.Reg':c.crnMessage==='pending'?'Pending':c.crn||'-';
     var crnCls=/^\d+$/.test(crnD)?'td-crn':'td-crn stat';
     return '<tr><td class="td-num">'+esc(c.section)+'</td><td class="'+crnCls+'">'+crnD+'</td><td class="td-ti">'+esc(c.title)+'</td><td class="td-cr">'+fmtCr(c.credits)+'</td><td class="td-rm"><button class="rm-btn" data-rm="'+c.id+'" title="Remove">&#10005;</button></td></tr>';
   };
   var _tblHead='<div class="pos-tscroll" tabindex="0" role="group" aria-label="Course table, scrolls sideways"><table class="pos-table"><thead><tr><th style="width:88px">Course</th><th style="width:66px">CRN</th><th>Title</th><th style="width:34px;text-align:center">Cr</th><th style="width:26px"><span class="sr-only">Remove</span></th></tr></thead><tbody>';
   var _tblEnd='</tbody></table></div>';
   var _secHd=function(t){return '<div style="font-size:12px;font-weight:700;color:var(--t2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;margin-top:10px">'+t+'</div>';};
-  var selLabs=fallElec.filter(function(c){return c.isLab;});
+  var selLabs=fallElec.filter(isLabC);
   var selCC=ccN()?fallElec.filter(isCCC):[];
   var customPicks=selCC.slice(0,ccN());               // first N count as custom core; extras fall to electives
   var pickIds={};customPicks.forEach(function(c){pickIds[c.id]=1;});
-  var nonLabElec=fallElec.filter(function(c){return !c.isLab && !pickIds[c.id];});
+  var nonLabElec=fallElec.filter(function(c){return !isLabC(c) && !pickIds[c.id];});
   if(ccN()){   // Regina 9/30 (FT '28): Custom Core category (choose 2) above Electives
     html+=_secHd('Custom Core &middot; choose '+ccN());
     html+= customPicks.length
@@ -5748,7 +5752,7 @@ function renderPlan(){
   if(crns.length||specCs.length){
     html+='<div class="crn-ref"><div class="crn-ref-hd">CRNs to register in ESTHER</div>'
       +'<div class="crn-chips">'+crns.map(function(crn){return '<span class="crn-chip">'+crn+'</span>';}).join('')
-      +specCs.map(function(c){return '<span class="crn-note">'+esc(c.crnMessage==='application'?'By application':'Sep. reg')+': '+esc(c.section)+'</span>';}).join('')
+      +specCs.map(function(c){return '<span class="crn-note">'+esc(c.crnMessage==='application'?'By application':c.crnMessage==='pending'?'CRN pending':'Sep. reg')+': '+esc(c.section)+'</span>';}).join('')
       +'</div><button class="btn bg" onclick="copyCRNs()" style="font-size:12px">Copy CRNs to clipboard</button></div>';
   }
   html+='</div>';   // close .pos-current
@@ -5766,7 +5770,7 @@ function savePlan(){
     about:'This is your saved Electivity course plan. To pick up where you left off, open the planner and choose "Load saved plan", then select this file. You can keep it on your computer or share it with your advisor.',
     program:'Rice Business PMBA-Evening, Class of 2027, Spring 2027',
     savedOn:new Date().toLocaleString(),
-    courses:picked.map(function(c){return {course:c.section,title:c.title,credits:c.credits,crn:c.crn||'-'};}),
+    courses:picked.map(function(c){return {course:c.section,title:c.title,credits:c.credits,crn:c.crn||(c.crnMessage==='pending'?'pending':'-')};}),
     // Kept for reloading - please don't edit.
     _restore:{cohort:'MBAPE-2027-SP27',savedAt:new Date().toISOString(),avail:S.avail,section:S.section,sel:S.sel}
   };
