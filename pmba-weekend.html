@@ -758,12 +758,18 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
 .td-crn{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green-500);white-space:nowrap}
 .td-crn.stat{color:var(--text-muted);font-weight:600}
 .td-ti{color:var(--text-secondary)}
-.pos-tscroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pos-tscroll{max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}   /* overflow-y explicit: an overflow-x:auto box must never capture vertical swipes (Amith 10/22: Credits tab would not scroll) */
 @media(max-width:560px){
   /* Phone: tighten the plan tables and let a too-wide one scroll inside its card (no page overflow,
      no column overlap). CRN wraps so "JGSB Enrolled" stacks rather than forcing the table wide. */
   .pos-table{font-size:11.5px}
-  .pos-table th,.pos-table td{padding-left:6px;padding-right:6px}
+  .pos-table th,.pos-table td{padding-left:4px;padding-right:4px}
+  .pos-card{padding:18px 12px}   /* gives the table room so it fits without inner sideways scrolling */
+  .pos-table thead th:nth-child(1){width:66px!important}.pos-table thead th:nth-child(2){width:46px!important}.pos-table thead th:nth-child(4){width:30px!important}.pos-table thead th:nth-child(5){width:26px!important}
+  .pos-table{table-layout:fixed;width:100%;font-size:11px}   /* the table takes the card's width; long titles wrap instead of widening it */
+  .pos-table td{overflow-wrap:break-word}
+  .pos-table th,.pos-table td{padding-left:3px;padding-right:3px}
+  .pos-table .td-num{font-size:10.5px}
   .td-crn{white-space:normal}
 }
 .td-cr{text-align:center;font-weight:800;color:var(--navy-900);font-family:var(--mono);font-size:12px}
