@@ -5189,6 +5189,7 @@ document.addEventListener('click',function(e){
         // must confirm via the on-card checkbox first - draw attention to it (no card expand)
         var gt=document.querySelector('#crd-'+id+' .prereq-gate');
         (window.a11ySay&&a11ySay('Not added yet. '+(c?c.title:'This course')+' has a prerequisite. Tick the prerequisite check box under the course to confirm you have completed it.'));
+        try{showToast('Not added yet. Tick the prerequisite box under the course to add it.');}catch(_){}   // Amith 10/22: the flash alone was easy to miss, so nothing seemed to happen
         var _pg=document.querySelector('#crd-'+id+' .pg-box');if(_pg)window.__a11yFocus=_pg;
         if(gt){gt.classList.remove('pg-flash');void gt.offsetWidth;gt.classList.add('pg-flash');setTimeout(function(){gt.classList.remove('pg-flash');},1500);
           var r=gt.getBoundingClientRect();if(r.top<84||r.bottom>window.innerHeight-70)gt.scrollIntoView({block:'center',behavior:'smooth'});}
