@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="electivity-build" content="2026-10-22 r1 electivity-ft-sp27.html">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1059,7 +1060,7 @@ mark.hl{background:#FFE58A;color:inherit;border-radius:2px;padding:0 1px;font-we
     </button>
     <button class="seg-b" id="tb-plan" onclick="showTab('plan')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      My Fall Course Credits
+      My Spring Course Credits
     </button>
   </div>
   <div class="pnl on" id="pnl-courses">
@@ -5418,7 +5419,7 @@ function renderPlan(){
   }
 
   var html='<div class="pos-card">'
-    +'<div class="pos-hd"><div class="pos-title">'+(IS_SPRING?'My Spring Course Credits':'My Fall Course Credits')+'</div><div class="pos-sub">Full-Time MBA &middot; Class of 2027 &middot; Rice Business</div></div>'
+    +'<div class="pos-hd"><div class="pos-title">'+(IS_SPRING?'My Spring Course Credits':'My Spring Course Credits')+'</div><div class="pos-sub">Full-Time MBA &middot; Class of 2027 &middot; Rice Business</div></div>'
     +'<div class="pos-stats">'
     +(IS_SPRING
        ?'<div class="ps"><div class="ps-lbl">Spring Elective Credits</div><div class="ps-val'+(ec>COHORT.cap?' over':'')+'">'+fmtCr(ec)+'</div><div class="ps-sub">of '+fmtCr(COHORT.rec)+' recommended</div></div>'
@@ -5508,12 +5509,16 @@ function loadPlan(input){
       var plan=JSON.parse(e.target.result);
       var d=plan._restore||plan;
       if(!d.sel) throw new Error('This doesn’t look like a saved plan file.');
+      var _here={cohort:'FT-2027-SP27'}.cohort;   // the emitter rewrites this to this planner's cohort and term code
+      if(d.cohort&&d.cohort!==_here&&!confirm('This plan was saved in a different planner ('+d.cohort+'). Only the courses offered here will be restored. Continue?')) return;
       S.avail=d.avail||'all';
       S.section=d.section||(coreHasSections()?1:null);
-      S.sel=d.sel.filter(function(id){return COURSES.some(function(c){return c.id===id;});});
-      showScreen('screen-app');
-      buildAreaPills();buildSchPills();if(!IS_SPRING)buildSprPills();syncSchTiles();renderSectionRow();applyF();updateSide();updateNav();
-      showToast('Plan loaded: '+S.sel.length+' courses restored');
+      var _all=d.sel.length;
+      S.sel=d.sel.filter(function(id){return COURSES.some(function(c){return c.id===id&&!isCore(c);});});
+      S.prereqOK={};S.sel.forEach(function(id){var c=byId(id);if(c&&IS_SPRING&&prereqStatus(c)==='unverified')S.prereqOK[id]=1;});   // a saved course was already confirmed
+      launchApp();   // Amith 10/22: same start-up as a fresh launch, so the Spring tab label and Spring-only setup are applied (loading from the start screen used to show Fall pieces)
+      if(typeof renderPlan==='function')renderPlan();
+      showToast('Plan loaded: '+S.sel.length+' courses restored'+(_all>S.sel.length?' ('+(_all-S.sel.length)+' not offered here)':''));
     }catch(err){alert('Could not load: '+err.message);}
   };
   reader.readAsText(file);input.value='';
