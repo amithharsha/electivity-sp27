@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="electivity-build" content="2026-10-24 r4 (course list 10.23.26) electivity-hmba-sp27.html">
+<meta name="electivity-build" content="2026-10-26 10:23 electivity-hmba-sp27.html">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -4036,6 +4036,8 @@ function prereqHtml(expr){
 // registration note for sections without a CRN to type in ESTHER (Regina 10/23: 'by application')
 function crnSpec(c){return {'application':'By application','Separate Registration':'Sep. registration','advisor':'See advisor','pending':'CRN pending'}[c&&c.crnMessage]||'';}
 function isAlways(c){return isCore(c)||c.schedule==='Specialized';}
+// Regina 10/26: the Specialized chip and list group hold every Program=Specialized course (schedule 'Specialized'), whatever its term
+function termKey(c){return c.schedule==='Specialized'?'Specialized':(c.term||'');}
 
 function syncSchTiles(){
   var isAll=(S.avail==='all');
@@ -4437,7 +4439,7 @@ function applyF(){
   var filtered=visible.filter(function(c){
     if(S.fArea.length&&!c.courseArea.split(';').some(function(a){return S.fArea.indexOf(a.trim())>=0;})) return false;
     if(S.fSch.length&&!(S.fSch.indexOf(c.schedule)>=0||(S.fSch.indexOf('__lab__')>=0&&c.isLab))) return false;
-    if(S.fTerm.length&&S.fTerm.indexOf(c.term)<0) return false;
+    if(S.fTerm.length&&S.fTerm.indexOf(c.term)<0&&S.fTerm.indexOf(termKey(c))<0) return false;
     if(S.fStrat==='alsospring'&&!SPR_SET.has(c.subjectCourse)) return false;
     if(S.fStrat==='blka'&&c.block!=='A') return false;
     if(S.fStrat==='blkb'&&c.block!=='B') return false;
@@ -4714,7 +4716,7 @@ function renderCourses(list,locked){
   var nonDay=elecs.filter(function(c){return c.schedule!=='Daytime';});
   var tord=['EFI','EFIII','Term 0','Term 1','Term 1-2','Term 2','Specialized',''];
   var grp={};
-  nonDay.forEach(function(c){var t=c.term||'';if(!grp[t])grp[t]=[];grp[t].push(c);});
+  nonDay.forEach(function(c){var t=termKey(c);if(!grp[t])grp[t]=[];grp[t].push(c);});
   var dgrp={};
   dayElecs.forEach(function(c){var t=c.term||'';if(!dgrp[t])dgrp[t]=[];dgrp[t].push(c);});
   var nCourse=function(n){return n+' course'+(n===1?'':'s');};
